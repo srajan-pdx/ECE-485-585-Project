@@ -10,8 +10,8 @@
 
 module readAndParse ();
 
-logic [7:0] timeRead, opRead;
-logic [32:0] addressRead;
+logic [7:0] timeRead[15:0], opRead[15:0];
+logic [32:0] addressRead[15:0];
 integer log_file, lineNumber = 0;
 
 initial begin
@@ -19,10 +19,12 @@ initial begin
 	
 	//Read through file line-by-line and collect time, operation and address
 	while(!$feof(log_file)) begin //read until end of file
-		$fscanf(log_file, "%d %d %x\n", timeRead, opRead, addressRead); 
+		$fscanf(log_file, "%d %d %x\n", timeRead[lineNumber], opRead[lineNumber], addressRead[lineNumber]); 
 		
-		$display("line %d: %d %d %x\n",lineNumber,timeRead, opRead, addressRead);
-		lineNumber++;
+		$display("line %d: %d %d %x\n",lineNumber,timeRead[lineNumber], opRead[lineNumber], addressRead[lineNumber]);
+		
+		if(lineNumber < 16)
+			lineNumber++;
 	end
 
 	$fclose(log_file);
