@@ -1,0 +1,33 @@
+//////////////////////////////////////////////////////////////
+// ECE 485/585 Fall 2020 Project
+//
+// Author: Riley McCammon (mccammon@pdx.edu)
+// Date: 12/10/20 
+// ------------
+// 
+//////////////////////////////////////////////////////////////////
+
+
+module readAndParse ();
+
+logic [7:0] timeRead, opRead;
+logic [32:0] addressRead;
+integer log_file, lineNumber = 0;
+
+initial begin
+	log_file = $fopen("log_file.txt", "r"); 
+	
+	//Read through file line-by-line and collect time, operation and address
+	while(!$feof(log_file)) begin //read until end of file
+		$fscanf(log_file, "%d %d %x\n", timeRead, opRead, addressRead); 
+		
+		$display("line %d: %d %d %x\n",lineNumber,timeRead, opRead, addressRead);
+		lineNumber++;
+	end
+
+	$fclose(log_file);
+	#100;
+	$stop;
+end
+
+endmodule: readAndParse
